@@ -42,7 +42,7 @@ class TestApi(unittest.TestCase):
         )
         self.assertEqual(
             response.read().decode(), "16", "ERROR MULTIPLY"
-    )
+        )
 
 
 if __name__ == "__main__":  # pragma: no cover
