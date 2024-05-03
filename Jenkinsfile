@@ -8,7 +8,8 @@ pipeline {
         }
     stage('Get Code') {
             steps {
-                git 'https://github.com/jcp1991/helloworld.git'
+                git branch: 'develop', url: 'https://github.com/jcp1991/helloworld.git'
+
             }
         }
         stage('Print Workspace') {
