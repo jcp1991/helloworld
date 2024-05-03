@@ -34,6 +34,16 @@ class TestApi(unittest.TestCase):
         self.assertEqual(
             response.read().decode(), "8", "ERROR SQRT"
         )
+    def test_api_multiply(self):
+        url = f"{BASE_URL}/calc/multiplicar/4/4"
+        response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+        self.assertEqual(
+            response.status, http.client.OK, f"Error en la petición API a {url}"
+        )
+        self.assertEqual(
+            response.read().decode(), "16", "ERROR MULTIPLY"
+    )
+
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()
