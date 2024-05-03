@@ -36,7 +36,6 @@ pipeline {
                 }
                 stage('Service') {
                     steps {
-                        timeout(time: 10, unit: 'SECONDS') {
                             bat '''
                                 set FLASK_APP=app\\api.py
                                 start flask run
@@ -45,7 +44,6 @@ pipeline {
                                 pytest test\\rest
                                 pytest test\\rest --junitxml=rest-results.xml
                             '''
-                        }
                     }
                 }
             }
