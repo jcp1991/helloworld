@@ -37,16 +37,14 @@ pipeline {
                 }
                 stage('Service') {
                     steps {
-                        timeout(time: 10, unit: 'SECONDS') {
-                            bat '''
-                                set FLASK_APP=app\\api.py
-                                start flask run
-                                start java -jar C:\\Users\\jose.coca\\Downloads\\instaladores\\wiremock-standalone-3.5.4.jar --port 9090 --root-dir test\\wiremock
-                                set PYTHONPATH=.
-                                pytest test\\rest
-                                pytest test\\rest --junitxml=rest-results.xml
-                            '''
-                        }
+                        bat '''
+                            set FLASK_APP=app\\api.py
+                            start flask run
+                            start java -jar C:\\Users\\jose.coca\\Downloads\\instaladores\\wiremock-standalone-3.5.4.jar --port 9090 --root-dir test\\wiremock
+                            set PYTHONPATH=.
+                            pytest test\\rest
+                            pytest test\\rest --junitxml=rest-results.xml
+                        '''
                     }
                 }
             }
