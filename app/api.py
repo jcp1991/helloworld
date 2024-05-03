@@ -48,3 +48,5 @@ def divide(op_1, op_2):
         return ("{}".format(result), http.client.OK, HEADERS)
     except TypeError as e:
         return (str(e), http.client.BAD_REQUEST, HEADERS)
+    except ValueError as e:
+        return (str(e), 406, HEADERS)
