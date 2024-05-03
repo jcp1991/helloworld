@@ -46,7 +46,3 @@ def divide(op_1, op_2):
         num_1, num_2 = util.convert_to_number(op_1), util.convert_to_number(op_2)
         result = CALCULATOR.divide(num_1, num_2)
         return ("{}".format(result), http.client.OK, HEADERS)
-    except TypeError as e:
-        return (str(e), http.client.BAD_REQUEST, HEADERS)
-    except ValueError as e:
-        return (str(e), 406, HEADERS)

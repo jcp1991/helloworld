@@ -21,9 +21,10 @@ class Calculator:
     def divide(self, x, y):
         self.check_types(x, y)
         if y == 0:
-            raise ValueError("Division by zero is not possible")
+            raise                                                TypeError("Division by zero is not possible")
+
         return x / y
-        
+
     def power(self, x, y):
         self.check_types(x, y)
         return x ** y
