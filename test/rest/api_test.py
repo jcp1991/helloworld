@@ -44,6 +44,15 @@ class TestApi(unittest.TestCase):
             response.read().decode(), "16", "ERROR MULTIPLY"
         )
 
+    def test_api_divide(self):
+        url = f"{BASE_URL}/calc/divide/8/2"
+        response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+        self.assertEqual(response.status, http.client.OK, f"Error en la petición API a {url}")
+        self.assertEqual(response.read().decode(), "4.0", "ERROR DIVIDE")
+
+        url = f"{BASE_URL}/calc/divide/10/0"
+        response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+        self.assertEqual(response.status, 406, f"Se esperaba código de error 406 en {url}")
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()
