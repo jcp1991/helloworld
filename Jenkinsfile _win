@@ -1,0 +1,76 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Clone') {
+            agent {
+                label 'win-agent'
+            }
+            steps {
+                git 'https://github.com/jcp1991/helloworld.git'
+                bat 'whoami'
+                bat 'hostname'
+            }
+        }
+        stage('Build') {
+            agent {
+                label 'win-agen2'
+            }
+            steps {
+                echo "Ejecutando en el agente: ${env.NODE_NAME}"
+                echo "Ejecutando la etapa de Build..."
+                bat 'whoami'
+                bat 'hostname'
+            }
+        }
+
+        stage('Paralelo') {
+            agent {
+                label 'win-agent'
+            }
+            steps {
+                parallel(
+                    "Unit": {
+                        echo "Ejecutando pruebas unitarias..."
+                        bat '''
+                            set PYTHONPATH=%WORKSPACE%
+                            pytest test\\unit
+                            pytest test\\unit --junitxml=unit-results.xml
+                        '''
+                        stash includes: '*.xml', name: 'unit-results'
+                    },
+                    "Service": {
+                        echo "Ejecutando pruebas de servicio..."
+                        timeout(time: 10, unit: 'SECONDS') {
+                            bat '''
+                                set FLASK_APP=app\\api.py
+                                start flask run
+                                start java -jar C:\\Users\\jose.coca\\Downloads\\instaladores\\wiremock-standalone-3.5.4.jar --port 9090 --root-dir test\\wiremock
+                                set PYTHONPATH=.
+                                pytest test\\rest
+                                pytest test\\rest --junitxml=rest-results.xml
+                            '''
+                            stash includes: '*.xml', name: 'rest-results'
+                        }
+                    }
+                )
+            }
+        }
+
+        stage('JUnit Results') {
+            agent {
+                label 'win-agen2'
+            }
+            steps {
+                script {
+                    bat 'whoami'
+                    bat 'hostname'
+                    unstash 'unit-results'
+                    unstash 'rest-results'
+
+                    junit '*.xml'
+                }
+            }
+        }
+    }
+}
